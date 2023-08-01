@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {useState, useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -9,13 +9,15 @@ import {
   Linking,
   Animated,
   Easing,
+  Modal,
 } from 'react-native';
-// import { red } from 'react-native-reanimated';
 
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [modalMessage, setModalMessage] = useState<string>('');
 
   const isEmailValid = (input: string) => {
     const emailRegex = /\S+@\S+\.\S+/;
@@ -27,12 +29,16 @@ const LoginScreen: React.FC = () => {
   };
 
   const handleLogin = () => {
-    //login logic here
-    console.log('Login button pressed');
+
+    // Login logic here
   };
 
   const handleForgotPassword = () => {
     Linking.openURL('https://toggl.com/track/forgot-password/');
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
   };
 
   const animationValue = useRef(new Animated.Value(0)).current;
@@ -54,32 +60,17 @@ const LoginScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <Animated.View
-        style={[styles.overlay, {backgroundColor: interpolatedBackgroundColor}]}
+        style={[styles.overlay, { backgroundColor: interpolatedBackgroundColor }]}
       />
 
-        <View style={styles.header}>
-          <Text style={styles.slogan}>
-            <Text style={styles.nextText}>N</Text>ext
-            <Text style={styles.tickText}>T</Text>ick
-          </Text>
-        </View>
+      <View style={styles.header}>
+        <Text style={styles.slogan}>
+          <Text style={styles.nextText}>N</Text>ext
+          <Text style={styles.tickText}>T</Text>ick
+        </Text>
+      </View>
 
       <View style={styles.wrapper}>
-
-
-        {/* <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          onBlur={() => {
-            if (email && !isEmailValid(email)) {
-              console.log('Invalid email format');
-            }
-          }}
-        /> */}
-
         <View style={styles.inputWrapper}>
           <Text style={styles.inputLabel}>Email</Text>
           <TextInput
@@ -90,12 +81,12 @@ const LoginScreen: React.FC = () => {
             keyboardType="email-address"
             onBlur={() => {
               if (email && !isEmailValid(email)) {
-                console.log('Invalid email format');
+                setModalMessage('Invalid email format.');
+                setIsModalVisible(true);
               }
             }}
           />
         </View>
-
 
         <View style={styles.inputWrapper}>
           <Text style={styles.inputLabel}>Password</Text>
@@ -107,10 +98,12 @@ const LoginScreen: React.FC = () => {
             secureTextEntry={!isPasswordVisible}
             onBlur={() => {
               if (password && !isPasswordValid(password)) {
-                console.log('Password must be at least 8 characters long');
+                setModalMessage('Password must be at least 8 characters long.');
+                setIsModalVisible(true);
               }
             }}
           />
+
           <TouchableOpacity
             style={styles.passwordToggle}
             onPress={() => setIsPasswordVisible(prev => !prev)}
@@ -119,35 +112,48 @@ const LoginScreen: React.FC = () => {
           </TouchableOpacity>
         </View>
 
-
         <TouchableOpacity
-            style={[
-              styles.button,
-              !isEmailValid(email) || !isPasswordValid(password)
-                ? styles.disabled
-                : null,
-            ]}
-            onPress={handleLogin}
-            disabled={!isEmailValid(email) || !isPasswordValid(password)}
-            onPressIn={startAnimation}>
-            <Text style={styles.buttonText}>Login</Text>
+          style={[
+            styles.button,
+            !isEmailValid(email) || !isPasswordValid(password) ? styles.disabled : null,
+          ]}
+          onPress={handleLogin}
+          disabled={!isEmailValid(email) || !isPasswordValid(password)}
+          onPressIn={startAnimation}
+        >
+          <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
+
         <TouchableOpacity onPress={handleForgotPassword}>
           <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
         </TouchableOpacity>
-
       </View>
+
+      <Modal
+        visible={isModalVisible}
+        animationType="fade"
+        transparent
+        onRequestClose={handleCloseModal}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>{modalMessage}</Text>
+            <TouchableOpacity style={styles.modalButton} onPress={handleCloseModal}>
+              <Text style={styles.modalButtonText}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f0f0f0',
-
   },
   wrapper: {
     height: 'auto',
@@ -161,8 +167,8 @@ const styles = StyleSheet.create({
   },
   inputWrapper: {
     flexDirection: 'column',
-    alignItems: 'flex-start', // Align the label at the start of the input field
-    alignSelf: 'flex-start', // Align the input field itself at the start
+    alignItems: 'flex-start',
+    alignSelf: 'flex-start',
     marginBottom: 10,
     width: '100%',
   },
@@ -173,10 +179,6 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 24,
     marginBottom: 20,
-    color: '#333',
-  },
-  headerText: {
-    fontSize: 24,
     color: '#333',
   },
   slogan: {
@@ -240,6 +242,32 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: 'blue',
     fontSize: 16,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+  },
+  modalText: {
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  modalButton: {
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 20,
+    alignSelf: 'center',
+  },
+  modalButtonText: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
 
