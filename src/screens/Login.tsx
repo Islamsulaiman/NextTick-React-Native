@@ -12,7 +12,12 @@ import {
   Modal,
 } from 'react-native';
 
+import {useNavigation} from '@react-navigation/native';
+
 const LoginScreen: React.FC = () => {
+
+  const navigation = useNavigation();
+
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
@@ -30,7 +35,7 @@ const LoginScreen: React.FC = () => {
 
   const handleLogin = () => {
 
-    // Login logic here
+    navigation.navigate('Home');
   };
 
   const handleRegister = () =>{
