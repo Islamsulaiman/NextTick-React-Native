@@ -39,7 +39,7 @@ const LoginScreen: React.FC = () => {
   };
 
   const handleRegister = () =>{
-    // register Logic
+    navigation.navigate('Register');
   };
 
   const handleForgotPassword = () => {

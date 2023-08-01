@@ -5,6 +5,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Login from './screens/Login';
 import {View, StyleSheet} from 'react-native';
 import HomeScreen from './screens/Home';
+import Register from './screens/Register';
 
 const Stack = createStackNavigator();
 
@@ -14,6 +15,7 @@ function App(): JSX.Element {
       <Stack.Navigator>
         <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
         <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Register" component={Register} />
       </Stack.Navigator>
     </NavigationContainer>
   );
