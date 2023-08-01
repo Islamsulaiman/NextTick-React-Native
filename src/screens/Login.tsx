@@ -33,6 +33,10 @@ const LoginScreen: React.FC = () => {
     // Login logic here
   };
 
+  const handleRegister = () =>{
+    // register Logic
+  };
+
   const handleForgotPassword = () => {
     Linking.openURL('https://toggl.com/track/forgot-password/');
   };
@@ -122,6 +126,10 @@ const LoginScreen: React.FC = () => {
           onPressIn={startAnimation}
         >
           <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
+          <Text style={styles.registerButtonText}>Register</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={handleForgotPassword}>
@@ -267,6 +275,18 @@ const styles = StyleSheet.create({
   modalButtonText: {
     color: 'white',
     fontSize: 16,
+    textAlign: 'center',
+  },
+  registerButton: {
+    backgroundColor: 'green',
+    padding: 10,
+    borderRadius: 20,
+    width: '97%',
+    marginTop: 10,
+  },
+  registerButtonText: {
+    color: 'white',
+    fontSize: 18,
     textAlign: 'center',
   },
 });
