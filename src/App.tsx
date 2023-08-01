@@ -21,5 +21,4 @@ function App(): JSX.Element {
   );
 }
 
-const styles = StyleSheet.create({});
 export default App;

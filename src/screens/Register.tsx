@@ -11,13 +11,25 @@ import {
   Modal,
 } from 'react-native';
 
+import CheckBox from '@react-native-community/checkbox';
+
+
 const RegisterScreen: React.FC = () => {
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [dob, setDob] = useState<string>('');
+  const [fullName, setFullName] = useState<string>('');
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [phoneExt, setPhoneExt] = useState<string>('');
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [modalMessage, setModalMessage] = useState<string>('');
+  const [agreeTerms, setAgreeTerms] = useState<boolean>(false);
+  const [isNotRobot, setIsNotRobot] = useState<boolean>(false);
+  const [isAgreeChecked, setIsAgreeChecked] = useState<boolean>(false);
+
 
   const isEmailValid = (input: string) => {
     const emailRegex = /\S+@\S+\.\S+/;
@@ -108,13 +120,105 @@ const RegisterScreen: React.FC = () => {
           </TouchableOpacity>
         </View>
 
+        <View style={styles.inputWrapper}>
+          <Text style={styles.inputLabel}>Confirm Password</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            secureTextEntry={!isPasswordVisible}
+            onBlur={() => {
+              if (confirmPassword !== password) {
+                setModalMessage('Passwords do not match.');
+                setIsModalVisible(true);
+              }
+            }}
+          />
+        </View>
+
+        <View style={styles.inputWrapper}>
+          <Text style={styles.inputLabel}>Date of Birth</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Date of Birth"
+            value={dob}
+            onChangeText={setDob}
+            keyboardType="numeric"
+          />
+        </View>
+
+        <View style={styles.inputWrapper}>
+          <Text style={styles.inputLabel}>Full Name</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Full Name"
+            value={fullName}
+            onChangeText={setFullName}
+          />
+        </View>
+
+        <View style={styles.inputWrapper}>
+          <Text style={styles.inputLabel}>Phone Number</Text>
+          <View style={styles.phoneNumberContainer}>
+            <TextInput
+              style={styles.phoneInput}
+              placeholder="Phone Number"
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
+              keyboardType="phone-pad"
+            />
+            <TextInput
+              style={styles.phoneExtInput}
+              placeholder="Ext"
+              value={phoneExt}
+              onChangeText={setPhoneExt}
+              keyboardType="numeric"
+            />
+          </View>
+        </View>
+
+
+        {/* checkboxes */}
+        {/* <View style={styles.checkboxContainer}>
+
+            <CheckBox value={isAgreeChecked}
+                onValueChange={setIsAgreeChecked}
+                // style={styles.checkbox}
+                tintColors={{ true: 'blue', false: 'gray' }}
+                />
+            <Text style={styles.checkboxLabel}>I agree with the terms and conditions.</Text>
+
+        </View>
+
+        <View style={styles.checkboxContainer}>
+            <CheckBox value={isAgreeChecked}
+                onValueChange={setIsAgreeChecked}
+                // style={styles.checkbox}
+                tintColors={{ true: 'blue', false: 'gray' }}
+                />
+            <Text style={styles.checkboxLabel}>I am not a robot.</Text>
+        </View> */}
+
         <TouchableOpacity
           style={[
             styles.button,
-            !isEmailValid(email) || !isPasswordValid(password) ? styles.disabled : null,
+            !isEmailValid(email) ||
+              !isPasswordValid(password) ||
+              confirmPassword !== password ||
+              !agreeTerms ||
+              !isNotRobot
+              ? styles.disabled
+              : null,
           ]}
           onPress={handleRegister}
-          disabled={!isEmailValid(email) || !isPasswordValid(password)}
+          disabled={
+            !isEmailValid(email) ||
+            !isPasswordValid(password) ||
+            confirmPassword !== password ||
+            !agreeTerms ||
+            !isNotRobot
+          }
           onPressIn={startAnimation}
         >
           <Text style={styles.buttonText}>Register</Text>
@@ -260,6 +364,39 @@ const styles = StyleSheet.create({
       color: 'white',
       fontSize: 16,
       textAlign: 'center',
+    },
+    checkboxContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 10,
+    },
+    checkboxLabel: {
+      marginLeft: 8,
+    },
+    phoneNumberContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    phoneInput: {
+      flex: 1,
+      height: 40,
+      borderColor: 'gray',
+      borderWidth: 1,
+      marginBottom: 10,
+      paddingLeft: 10,
+      borderRadius: 5,
+      backgroundColor: 'white',
+    },
+    phoneExtInput: {
+      width: '30%',
+      height: 40,
+      borderColor: 'gray',
+      borderWidth: 1,
+      marginBottom: 10,
+      marginLeft: 10,
+      paddingLeft: 10,
+      borderRadius: 5,
+      backgroundColor: 'white',
     },
     registerButton: {
       backgroundColor: 'green',
