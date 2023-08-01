@@ -45,7 +45,7 @@ const LoginScreen: React.FC = () => {
 
   const startAnimation = () => {
     Animated.timing(animationValue, {
-      toValue: 1,
+      toValue: 2,
       duration: 1000,
       easing: Easing.linear,
       useNativeDriver: true,
