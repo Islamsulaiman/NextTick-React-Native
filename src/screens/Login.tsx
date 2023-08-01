@@ -67,7 +67,7 @@ const LoginScreen: React.FC = () => {
       <View style={styles.wrapper}>
 
 
-        <TextInput
+        {/* <TextInput
           style={styles.input}
           placeholder="Email"
           value={email}
@@ -78,8 +78,27 @@ const LoginScreen: React.FC = () => {
               console.log('Invalid email format');
             }
           }}
-        />
-        {/* <View style={styles.passwordContainer}> */}
+        /> */}
+
+        <View style={styles.inputWrapper}>
+          <Text style={styles.inputLabel}>Email</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            onBlur={() => {
+              if (email && !isEmailValid(email)) {
+                console.log('Invalid email format');
+              }
+            }}
+          />
+        </View>
+
+
+        <View style={styles.inputWrapper}>
+          <Text style={styles.inputLabel}>Password</Text>
           <TextInput
             style={styles.input}
             placeholder="Password"
@@ -88,19 +107,18 @@ const LoginScreen: React.FC = () => {
             secureTextEntry={!isPasswordVisible}
             onBlur={() => {
               if (password && !isPasswordValid(password)) {
-                // Handle invalid password length
                 console.log('Password must be at least 8 characters long');
               }
             }}
           />
-
-        {/* </View> */}
-
-        <TouchableOpacity
+          <TouchableOpacity
             style={styles.passwordToggle}
-            onPress={() => setIsPasswordVisible(prev => !prev)}>
+            onPress={() => setIsPasswordVisible(prev => !prev)}
+          >
             <Text>{isPasswordVisible ? 'Hide' : 'Show'}</Text>
           </TouchableOpacity>
+        </View>
+
 
         <TouchableOpacity
             style={[
@@ -128,17 +146,29 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: '#f0f0f0',
+
   },
   wrapper: {
     height: 'auto',
-    backgroundColor: '#f0f0f0',
+    backgroundColor: 'white',
     padding: 20,
     borderRadius: 10,
     width: '90%',
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
+  },
+  inputWrapper: {
+    flexDirection: 'column',
+    alignItems: 'flex-start', // Align the label at the start of the input field
+    alignSelf: 'flex-start', // Align the input field itself at the start
+    marginBottom: 10,
+    width: '100%',
+  },
+  inputLabel: {
+    fontSize: 18,
+    marginBottom: 5,
   },
   header: {
     fontSize: 24,
@@ -161,7 +191,7 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   input: {
-    width: '80%',
+    width: '97%',
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
@@ -196,7 +226,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'blue',
     padding: 10,
     borderRadius: 20,
-    width: '80%',
+    width: '97%',
   },
   buttonText: {
     color: 'white',
