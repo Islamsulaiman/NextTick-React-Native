@@ -48,15 +48,13 @@ const RegisterScreen: React.FC = () => {
     return input.length >= 8;
   };
 
-  const storeData = async (value: Object) => {
+  const storeData = async (value: any) => {
     try {
       await AsyncStorage.setItem('user', JSON.stringify(value));
-
-
-      console.log('heloooooooooo');
       navigation.navigate('Login');
     } catch (e) {
-      console.error('Error during registration:', e);
+      setModalMessage('Error during sending data, please try again later.');
+      setIsModalVisible(true);
     }
   };
 
@@ -68,14 +66,20 @@ const RegisterScreen: React.FC = () => {
       password,
     };
 
+    console.log('user');
+    console.log(user);
+
     storeData(user);
-
-    // navigation.navigate('Login');
-
   };
 
   const handleCloseModal = () => {
     setIsModalVisible(false);
+  };
+
+  const handleFullNameChange = (input: string) => {
+    // Only accept alphabets, spaces, and ensure maximum length is 30 characters
+    const sanitizedInput = input.replace(/[^a-zA-Z ]/g, '').substr(0, 30);
+    setFullName(sanitizedInput);
   };
 
   const animationValue = useRef(new Animated.Value(0)).current;
@@ -177,8 +181,6 @@ const RegisterScreen: React.FC = () => {
             }}
           />
 
-
-
         </View>
 
         <View style={styles.inputWrapper}>
@@ -192,14 +194,13 @@ const RegisterScreen: React.FC = () => {
           <DateTimePicker
             testID="dateTimePicker"
             value={dob || new Date()}
-            mode="time"
+            mode="date"
             display="default"
             onChange={dateChangeHandler}
           />
         )}
+
       </View>
-
-
 
         <View style={styles.inputWrapper}>
           <Text style={styles.inputLabel}>Full Name</Text>
@@ -207,7 +208,7 @@ const RegisterScreen: React.FC = () => {
             style={styles.input}
             placeholder="Full Name"
             value={fullName}
-            onChangeText={setFullName}
+            onChangeText={handleFullNameChange}
           />
         </View>
 
@@ -437,10 +438,6 @@ const styles = StyleSheet.create({
       fontSize: 18,
       textAlign: 'center',
     },
-
-
-
-
 
     dateOfBirthText: {
       fontSize: 16,
