@@ -14,6 +14,8 @@ import {
 
 import {useNavigation} from '@react-navigation/native';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const LoginScreen: React.FC = () => {
 
   const navigation = useNavigation();
@@ -33,11 +35,38 @@ const LoginScreen: React.FC = () => {
     return input.length >= 8;
   };
 
-  const handleLogin = () => {
-    setPassword('');
-    setEmail('');
-    navigation.navigate('Home');
+  const handleLogin = async () => {
+    try {
+      // Fetch the user data from AsyncStorage
+      const storedUser = await AsyncStorage.getItem('user');
+      console.log('storedUser');
+      console.log(storedUser);
+      if (!storedUser) {
+        setModalMessage('User not found. Please register first.');
+        setIsModalVisible(true);
+        return;
+      }
+
+      const storedUserData = JSON.parse(storedUser);
+
+      if (email === storedUserData.email && password === storedUserData.password) {
+        // Successful login
+        setPassword('');
+        setEmail('');
+        navigation.navigate('Home');
+      } else {
+        // Invalid login credentials
+        setModalMessage('Invalid email or password.');
+        setIsModalVisible(true);
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      setModalMessage('An error occurred during login. Please try again later.');
+      setIsModalVisible(true);
+    }
   };
+
+
 
   const handleRegister = () =>{
     navigation.navigate('Register');
