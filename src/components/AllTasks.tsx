@@ -32,7 +32,7 @@ const AllTasks: React.FC = () => {
     }
   };
 
-  const deleteTask = (taskId: number) => {
+  const deleteOneTask = (taskId: number) => {
     const updatedTasks = tasks.filter((task) => task.id !== taskId);
     updateAsyncStorage(updatedTasks);
   };
@@ -55,7 +55,7 @@ const AllTasks: React.FC = () => {
         <TouchableOpacity style={styles.viewButton} onPress={() => openTaskDescription(item)}>
           <Text style={styles.buttonText}>View</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.deleteButton} onPress={() => confirmDeleteTask(item.id)}>
+        <TouchableOpacity style={styles.deleteButton} onPress={() => deleteOneTask(item.id)}>
           <Text style={styles.buttonText}>Delete</Text>
         </TouchableOpacity>
       </View>
@@ -72,16 +72,8 @@ const AllTasks: React.FC = () => {
     setModalVisible(false);
   };
 
-  const confirmDeleteTask = (taskId: number) => {
-    Alert.alert(
-      'Confirm Delete',
-      'Are you sure you want to delete this task?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Delete', style: 'destructive', onPress: () => deleteTask(taskId) },
-      ],
-      { cancelable: true }
-    );
+  const deleteTask = (taskId: number) => {
+    deleteTask(taskId);
   };
 
   const formatDate = (timestamp: number) => {
