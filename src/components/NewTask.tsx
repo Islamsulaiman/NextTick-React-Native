@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Animated,
+  Modal,
 } from 'react-native';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -22,7 +23,17 @@ const NewTask = () => {
   const [showStartTimePicker, setShowStartTimePicker] = useState(false);
   const [showEndTimePicker, setShowEndTimePicker] = useState(false);
 
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [modalMessage, setModalMessage] = useState<string>('');
+
+
   const handleTaskSubmit = async () => {
+
+    if (endTime < startTime) {
+      setModalMessage('End date can"t be before start date!.');
+      setIsModalVisible(true);
+      return;
+    }
 
     const newTask = {
       title: taskTitle,
@@ -94,6 +105,10 @@ const NewTask = () => {
   };
 
 
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -167,6 +182,21 @@ const NewTask = () => {
 
 
 
+      <Modal
+        visible={isModalVisible}
+        animationType="fade"
+        transparent
+        onRequestClose={handleCloseModal}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>{modalMessage}</Text>
+            <TouchableOpacity style={styles.modalButton} onPress={handleCloseModal}>
+              <Text style={styles.modalButtonText}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
