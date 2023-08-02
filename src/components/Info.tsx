@@ -91,12 +91,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   logoutButton: {
-    // position: 'absolute',
-    // bottom: 16,
-    // left: 16,
-    // right: 16,
     marginTop: 30,
-    backgroundColor: 'red',
+    backgroundColor: '#AF0505',
     padding: 10,
     borderRadius: 5,
   },
