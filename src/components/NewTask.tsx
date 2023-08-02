@@ -11,6 +11,8 @@ import {
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const NewTask = () => {
   const [taskTitle, setTaskTitle] = useState('');
@@ -20,14 +22,38 @@ const NewTask = () => {
   const [showStartTimePicker, setShowStartTimePicker] = useState(false);
   const [showEndTimePicker, setShowEndTimePicker] = useState(false);
 
-  const handleTaskSubmit = () => {
-    // You can save the task to AsyncStorage or perform any other actions here
-    console.log('Task Title:', taskTitle);
-    console.log('Task Description:', taskDescription);
+  const handleTaskSubmit = async () => {
 
-    // Clear the input fields after submission
-    setTaskTitle('');
-    setTaskDescription('');
+    const newTask = {
+      title: taskTitle,
+      description: taskDescription,
+      startTime: startTime.getTime(),
+      endTime: endTime.getTime(),
+    };
+
+    try {
+      // Get existing tasks from AsyncStorage
+      const existingTasksJson = await AsyncStorage.getItem('tasks');
+      const existingTasks = existingTasksJson ? JSON.parse(existingTasksJson) : [];
+
+      // Add the new task to the existing tasks array
+      const updatedTasks = [...existingTasks, newTask];
+
+      // Save the updated tasks array back to AsyncStorage
+      await AsyncStorage.setItem('tasks', JSON.stringify(updatedTasks));
+
+      const final = await AsyncStorage.getItem('tasks');
+      console.log('final');
+      console.log(final);
+
+      // Clear the input fields after submission
+      setTaskTitle('');
+      setTaskDescription('');
+      setStartTime(new Date());
+      setEndTime(new Date());
+    } catch (error) {
+      console.error('Error saving task:', error);
+    }
   };
 
   const animationValue = useRef(new Animated.Value(0)).current;
@@ -98,44 +124,44 @@ const NewTask = () => {
           />
         </View>
 
-    <View style={styles.inputWrapper}>
-      <Text style={styles.inputLabel}>Start Time</Text>
-      <TouchableOpacity onPress={showStartTimePickerHandler}>
-        <Text style={styles.dateText}>{startTime.toLocaleString()}</Text>
-      </TouchableOpacity>
-      {showStartTimePicker && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={startTime}
-          mode="date"
-          is24Hour={true}
-          display="default"
-          onChange={startTimeChangeHandler}
-        />
-      )}
-    </View>
-
-    <View style={styles.inputWrapper}>
-      <Text style={styles.inputLabel}>End Time</Text>
-      <TouchableOpacity onPress={showEndTimePickerHandler}>
-        <Text style={styles.dateText}>{endTime.toLocaleString()}</Text>
-      </TouchableOpacity>
-      {showEndTimePicker && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={endTime}
-          mode="date"
-          is24Hour={true}
-          display="default"
-          onChange={endTimeChangeHandler}
-        />
-      )}
-    </View>
-
-
-        <TouchableOpacity style={styles.button} onPress={handleTaskSubmit}>
-          <Text style={styles.buttonText}>Submit</Text>
+      <View style={styles.inputWrapper}>
+        <Text style={styles.inputLabel}>Start Time</Text>
+        <TouchableOpacity onPress={showStartTimePickerHandler}>
+          <Text style={styles.dateText}>{startTime.toLocaleString()}</Text>
         </TouchableOpacity>
+        {showStartTimePicker && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={startTime}
+            mode="date"
+            is24Hour={true}
+            display="default"
+            onChange={startTimeChangeHandler}
+          />
+        )}
+      </View>
+
+      <View style={styles.inputWrapper}>
+        <Text style={styles.inputLabel}>End Time</Text>
+        <TouchableOpacity onPress={showEndTimePickerHandler}>
+          <Text style={styles.dateText}>{endTime.toLocaleString()}</Text>
+        </TouchableOpacity>
+        {showEndTimePicker && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={endTime}
+            mode="date"
+            is24Hour={true}
+            display="default"
+            onChange={endTimeChangeHandler}
+          />
+        )}
+      </View>
+
+
+      <TouchableOpacity style={styles.button} onPress={handleTaskSubmit}>
+        <Text style={styles.buttonText}>Submit</Text>
+      </TouchableOpacity>
 
       </View>
 
