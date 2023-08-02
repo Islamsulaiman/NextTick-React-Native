@@ -41,6 +41,7 @@ const NewTask = () => {
     }
 
     const newTask = {
+      id: Date.now(),
       title: taskTitle,
       description: taskDescription,
       startTime: startTime.getTime(),
