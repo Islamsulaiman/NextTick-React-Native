@@ -1,22 +1,45 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Login from './screens/Login';
-import {View, StyleSheet} from 'react-native';
-import HomeScreen from './screens/Home';
 // import Register from './screens/Register';
 import RegisterScreen from './screens/Register';
+import TabBase from './navigation/TabBase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const Stack = createStackNavigator();
 
+const getUser = async () => {
+  const currentUser = await AsyncStorage.getItem('user');
+  return currentUser ? JSON.parse(currentUser) : null;
+};
+
 function App(): JSX.Element {
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const userData = await getUser();
+      setUser(userData);
+    })();
+
+  }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-      </Stack.Navigator>
+      {user && user.email ? (
+          <Stack.Screen name="tabBase" component={TabBase} options={{ headerShown: false }} />
+      ) : (
+        <>
+          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name="tabBase" component={TabBase} options={{ headerShown: false }} />
+          </>
+      )}
+        </Stack.Navigator>
     </NavigationContainer>
   );
 }

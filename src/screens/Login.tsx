@@ -50,12 +50,10 @@ const LoginScreen: React.FC = () => {
       const storedUserData = JSON.parse(storedUser);
 
       if (email === storedUserData.email && password === storedUserData.password) {
-        // Successful login
         setPassword('');
         setEmail('');
-        navigation.navigate('Home');
+        navigation.navigate('tabBase');
       } else {
-        // Invalid login credentials
         setModalMessage('Invalid email or password.');
         setIsModalVisible(true);
       }
@@ -69,6 +67,8 @@ const LoginScreen: React.FC = () => {
 
 
   const handleRegister = () =>{
+    setPassword('');
+    setEmail('');
     navigation.navigate('Register');
   };
 
