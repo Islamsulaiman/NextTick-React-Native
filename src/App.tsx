@@ -31,7 +31,12 @@ function App(): JSX.Element {
     <NavigationContainer>
       <Stack.Navigator>
       {user && user.email ? (
+        <>
           <Stack.Screen name="tabBase" component={TabBase} options={{ headerShown: false }} />
+          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+        </>
+
+
       ) : (
         <>
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
