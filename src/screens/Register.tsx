@@ -114,12 +114,7 @@ const RegisterScreen: React.FC = () => {
   };
 
   return (
-
-    <ScrollView contentContainerStyle={styles.scrollViewContent}>
-
-
-
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <Animated.View
           style={[styles.overlay, { backgroundColor: interpolatedBackgroundColor }]}
         />
@@ -276,9 +271,7 @@ const RegisterScreen: React.FC = () => {
             </View>
           </View>
         </Modal>
-      </View>
-
-    </ScrollView>
+      </ScrollView>
   );
 };
 

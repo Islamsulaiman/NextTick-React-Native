@@ -18,7 +18,6 @@ const Info = () => {
       const userFromStorage = await AsyncStorage.getItem('user');
       if (userFromStorage) {
         setUserData(JSON.parse(userFromStorage));
-        navigation.navigate('Login');
       }
     } catch (error) {
       console.error('Error reading user data from AsyncStorage:', error);
@@ -29,6 +28,7 @@ const Info = () => {
     try {
       await AsyncStorage.removeItem('user');
       setUserData(null);
+      navigation.navigate('Login');
     } catch (error) {
       console.error('Error deleting user data from AsyncStorage:', error);
     }

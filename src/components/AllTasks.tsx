@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
-import React, { useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Modal, Alert, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, View, StyleSheet, TouchableOpacity, Modal, Alert, FlatList, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -95,8 +95,44 @@ const AllTasks: React.FC = () => {
     return Math.floor(differenceInMilliseconds / oneDayInMilliseconds);
   };
 
+  const deleteAllTasks = () => {
+    Alert.alert(
+      'Delete All Tasks',
+      'Are you sure you want to delete all tasks?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete All',
+          style: 'destructive',
+          onPress: () => confirmDeleteAllTasks(),
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
+  const confirmDeleteAllTasks = async () => {
+    try {
+      await AsyncStorage.removeItem('tasks');
+      setTasks([]);
+      Alert.alert('All tasks have been deleted.');
+    } catch (error) {
+      console.error('Error deleting tasks from AsyncStorage:', error);
+      Alert.alert('Error deleting tasks.');
+    }
+  };
+
   return (
     <View style={styles.container}>
+      {tasks.length === 0 ? (
+        <View style={styles.imageContainer}>
+          <Image source={require('../assets/pictures/nothing_to_do.jpg')} style={styles.image} />
+        </View>
+      ) : (
+        <TouchableOpacity style={styles.deleteAllButton} onPress={deleteAllTasks}>
+          <Text style={styles.deleteAllButtonText}>Delete All Tasks</Text>
+        </TouchableOpacity>
+      )}
       <FlatList
         data={tasks}
         renderItem={renderItem}
@@ -194,6 +230,28 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 14,
     textAlign: 'center',
+  },
+  deleteAllButton: {
+    backgroundColor: 'red',
+    padding: 8,
+    borderRadius: 5,
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  deleteAllButtonText: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  imageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: 300,
+    height: 300,
+    resizeMode: 'contain',
   },
 });
 
