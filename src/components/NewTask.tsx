@@ -14,8 +14,13 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import {useNavigation} from '@react-navigation/native';
+
 
 const NewTask = () => {
+
+  const navigation = useNavigation();
+
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
   const [startTime, setStartTime] = useState(new Date());
@@ -43,25 +48,23 @@ const NewTask = () => {
     };
 
     try {
-      // Get existing tasks from AsyncStorage
       const existingTasksJson = await AsyncStorage.getItem('tasks');
       const existingTasks = existingTasksJson ? JSON.parse(existingTasksJson) : [];
 
-      // Add the new task to the existing tasks array
       const updatedTasks = [...existingTasks, newTask];
 
-      // Save the updated tasks array back to AsyncStorage
       await AsyncStorage.setItem('tasks', JSON.stringify(updatedTasks));
 
       const final = await AsyncStorage.getItem('tasks');
       console.log('final');
       console.log(final);
 
-      // Clear the input fields after submission
       setTaskTitle('');
       setTaskDescription('');
       setStartTime(new Date());
       setEndTime(new Date());
+
+      navigation.navigate('tasks');
     } catch (error) {
       console.error('Error saving task:', error);
     }

@@ -9,6 +9,7 @@ import {
   Animated,
   Easing,
   Modal,
+  ScrollView,
 } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -111,168 +112,180 @@ const RegisterScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Animated.View
-        style={[styles.overlay, { backgroundColor: interpolatedBackgroundColor }]}
-      />
 
-      <View style={styles.header}>
-        <Text style={styles.slogan}>
-          <Text style={styles.nextText}>N</Text>ext
-          <Text style={styles.tickText}>T</Text>ick
-        </Text>
-      </View>
+    <ScrollView contentContainerStyle={styles.scrollViewContent}>
 
-      <View style={styles.wrapper}>
-        <View style={styles.inputWrapper}>
-          <Text style={styles.inputLabel}>Email</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            onBlur={() => {
-              if (email && !isEmailValid(email)) {
-                setModalMessage('Invalid email format.');
-                setIsModalVisible(true);
-              }
-            }}
-          />
+
+
+      <View style={styles.container}>
+        <Animated.View
+          style={[styles.overlay, { backgroundColor: interpolatedBackgroundColor }]}
+        />
+
+        <View style={styles.header}>
+          <Text style={styles.slogan}>
+            <Text style={styles.nextText}>N</Text>ext
+            <Text style={styles.tickText}>T</Text>ick
+          </Text>
         </View>
 
-        <View style={styles.inputWrapper}>
-          <Text style={styles.inputLabel}>Password</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry={!isPasswordVisible}
-            onBlur={() => {
-              if (password && !isPasswordValid(password)) {
-                setModalMessage('Password must be at least 8 characters long.');
-                setIsModalVisible(true);
-              }
-            }}
-          />
-
-          <TouchableOpacity
-            style={styles.passwordToggle}
-            onPress={() => setIsPasswordVisible((prev) => !prev)}
-          >
-            <Text>{isPasswordVisible ? 'Hide' : 'Show'}</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.inputWrapper}>
-          <Text style={styles.inputLabel}>Confirm Password</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            secureTextEntry={!isPasswordVisible}
-            onBlur={() => {
-              if (confirmPassword !== password) {
-                setModalMessage('Passwords do not match.');
-                setIsModalVisible(true);
-              }
-            }}
-          />
-
-        </View>
-
-        <View style={styles.inputWrapper}>
-          <Text style={styles.inputLabel}>Date of Birth</Text>
-          <TouchableOpacity onPress={showDatePickerHandler}>
-            <Text style={styles.dateOfBirthText}>
-              {dob ? dob.toDateString() : 'Select Date of Birth'}
-            </Text>
-          </TouchableOpacity>
-          {showDatePicker && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={dob || new Date()}
-              mode="date"
-              display="default"
-              onChange={dateChangeHandler}
-            />
-          )}
-
-        </View>
-
-        <View style={styles.inputWrapper}>
-          <Text style={styles.inputLabel}>Full Name</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Full Name"
-            value={fullName}
-            onChangeText={handleFullNameChange}
-          />
-        </View>
-
-        <View style={styles.inputWrapper}>
-          <Text style={styles.inputLabel}>Phone Number</Text>
-          <View style={styles.phoneNumberContainer}>
+        <View style={styles.wrapper}>
+          <View style={styles.inputWrapper}>
+            <Text style={styles.inputLabel}>Email</Text>
             <TextInput
-              style={styles.phoneInput}
-              placeholder="Phone Number"
-              value={phoneNumber}
-              onChangeText={setPhoneNumber}
-              keyboardType="phone-pad"
-            />
-            <TextInput
-              style={styles.phoneExtInput}
-              placeholder="Ext"
-              value={phoneExt}
-              onChangeText={setPhoneExt}
-              keyboardType="numeric"
+              style={styles.input}
+              placeholder="Email"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              onBlur={() => {
+                if (email && !isEmailValid(email)) {
+                  setModalMessage('Invalid email format.');
+                  setIsModalVisible(true);
+                }
+              }}
             />
           </View>
-        </View>
 
-        <TouchableOpacity
-          style={[
-            styles.button,
-            !isEmailValid(email) ||
-              !isPasswordValid(password) ||
-              confirmPassword !== password
-              ? styles.disabled
-              : null,
-          ]}
-          onPress={handleRegister}
-          disabled={
-            !isEmailValid(email) ||
-            !isPasswordValid(password) ||
-            confirmPassword !== password
-          }
-          onPressIn={startAnimation}
-        >
-          <Text style={styles.buttonText}>Register</Text>
-        </TouchableOpacity>
-      </View>
+          <View style={styles.inputWrapper}>
+            <Text style={styles.inputLabel}>Password</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!isPasswordVisible}
+              onBlur={() => {
+                if (password && !isPasswordValid(password)) {
+                  setModalMessage('Password must be at least 8 characters long.');
+                  setIsModalVisible(true);
+                }
+              }}
+            />
 
-      <Modal
-        visible={isModalVisible}
-        animationType="fade"
-        transparent
-        onRequestClose={handleCloseModal}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalText}>{modalMessage}</Text>
-            <TouchableOpacity style={styles.modalButton} onPress={handleCloseModal}>
-              <Text style={styles.modalButtonText}>OK</Text>
+            <TouchableOpacity
+              style={styles.passwordToggle}
+              onPress={() => setIsPasswordVisible((prev) => !prev)}
+            >
+              <Text>{isPasswordVisible ? 'Hide' : 'Show'}</Text>
             </TouchableOpacity>
           </View>
+
+          <View style={styles.inputWrapper}>
+            <Text style={styles.inputLabel}>Confirm Password</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              secureTextEntry={!isPasswordVisible}
+              onBlur={() => {
+                if (confirmPassword !== password) {
+                  setModalMessage('Passwords do not match.');
+                  setIsModalVisible(true);
+                }
+              }}
+            />
+
+          </View>
+
+          <View style={styles.inputWrapper}>
+            <Text style={styles.inputLabel}>Date of Birth</Text>
+            <TouchableOpacity onPress={showDatePickerHandler}>
+              <Text style={styles.dateOfBirthText}>
+                {dob ? dob.toDateString() : 'Select Date of Birth'}
+              </Text>
+            </TouchableOpacity>
+            {showDatePicker && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={dob || new Date()}
+                mode="date"
+                display="default"
+                onChange={dateChangeHandler}
+              />
+            )}
+
+          </View>
+
+          <View style={styles.inputWrapper}>
+            <Text style={styles.inputLabel}>Full Name</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Full Name"
+              value={fullName}
+              onChangeText={handleFullNameChange}
+            />
+          </View>
+
+          <View style={styles.inputWrapper}>
+            <Text style={styles.inputLabel}>Phone Number</Text>
+            <View style={styles.phoneNumberContainer}>
+              <TextInput
+                style={styles.phoneInput}
+                placeholder="Phone Number"
+                value={phoneNumber}
+                onChangeText={setPhoneNumber}
+                keyboardType="phone-pad"
+              />
+              <TextInput
+                style={styles.phoneExtInput}
+                placeholder="Ext"
+                value={phoneExt}
+                onChangeText={setPhoneExt}
+                keyboardType="numeric"
+              />
+            </View>
+          </View>
+
+          <TouchableOpacity
+            style={[
+              styles.button,
+              !isEmailValid(email) ||
+                !isPasswordValid(password) ||
+                confirmPassword !== password
+                ? styles.disabled
+                : null,
+            ]}
+            onPress={handleRegister}
+            disabled={
+              !isEmailValid(email) ||
+              !isPasswordValid(password) ||
+              confirmPassword !== password
+            }
+            onPressIn={startAnimation}
+          >
+            <Text style={styles.buttonText}>Register</Text>
+          </TouchableOpacity>
         </View>
-      </Modal>
-    </View>
+
+        <Modal
+          visible={isModalVisible}
+          animationType="fade"
+          transparent
+          onRequestClose={handleCloseModal}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalText}>{modalMessage}</Text>
+              <TouchableOpacity style={styles.modalButton} onPress={handleCloseModal}>
+                <Text style={styles.modalButtonText}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      </View>
+
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
     container: {
       flex: 1,
       justifyContent: 'center',
