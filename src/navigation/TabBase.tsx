@@ -9,6 +9,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import AllTasks from '../components/AllTasks';
 import NewTask from '../components/NewTask';
 import Info from '../components/Info';
+import LoginScreen from '../screens/Login';
 
 MaterialCommunityIcons;
 
@@ -69,6 +70,7 @@ export default function TabBase() {
           ),
         }}
       />
+
     </Tab.Navigator>
   );
 }

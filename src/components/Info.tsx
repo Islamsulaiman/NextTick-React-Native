@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
 
+
 const Info = () => {
   const [userData, setUserData] = useState(null);
   const navigation = useNavigation();
@@ -90,11 +91,11 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   logoutButton: {
-    position: 'absolute',
-    bottom: 16,
-    left: 16,
-    right: 16,
-    marginTop: 16,
+    // position: 'absolute',
+    // bottom: 16,
+    // left: 16,
+    // right: 16,
+    marginTop: 30,
     backgroundColor: 'red',
     padding: 10,
     borderRadius: 5,

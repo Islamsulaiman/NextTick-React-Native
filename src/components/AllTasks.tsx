@@ -124,6 +124,7 @@ const AllTasks: React.FC = () => {
 
   return (
     <View style={styles.container}>
+
       {tasks.length === 0 ? (
         <View style={styles.imageContainer}>
           <Image source={require('../assets/pictures/nothing_to_do.jpg')} style={styles.image} />
@@ -156,6 +157,7 @@ const AllTasks: React.FC = () => {
           </View>
         </View>
       </Modal>
+
     </View>
   );
 };

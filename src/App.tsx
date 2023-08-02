@@ -7,6 +7,7 @@ import Login from './screens/Login';
 import RegisterScreen from './screens/Register';
 import TabBase from './navigation/TabBase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Info from './components/Info';
 
 const Stack = createStackNavigator();
 
@@ -30,21 +31,19 @@ function App(): JSX.Element {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      {user && user.email ? (
-        <>
-          <Stack.Screen name="tabBase" component={TabBase} options={{ headerShown: false }} />
-          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-        </>
-
-
-      ) : (
-        <>
-          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-          <Stack.Screen name="Register" component={RegisterScreen} />
-          <Stack.Screen name="tabBase" component={TabBase} options={{ headerShown: false }} />
+        {!user || !user.email ? (
+          <>
+            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+            <Stack.Screen name="Register" component={RegisterScreen} />
+            <Stack.Screen name="tabBase" component={TabBase} options={{ headerShown: false }} />
           </>
-      )}
-        </Stack.Navigator>
+        ) : (
+          <>
+            <Stack.Screen name="tabBase" component={TabBase} options={{ headerShown: false }} />
+            <Stack.Screen name="Info" component={Info} />
+          </>
+        )}
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
