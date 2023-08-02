@@ -84,7 +84,13 @@ const AllTasks: React.FC = () => {
   const getDifferenceInDays = (startTimestamp: number, endTimestamp: number) => {
     const oneDayInMilliseconds = 1000 * 60 * 60 * 24;
     const differenceInMilliseconds = endTimestamp - startTimestamp;
-    return Math.floor(differenceInMilliseconds / oneDayInMilliseconds);
+    const finalResult = Math.floor(differenceInMilliseconds / oneDayInMilliseconds);
+
+    if (finalResult === 0){
+      return 'Same day';
+    } else {
+      return `${finalResult} days`;
+    }
   };
 
   const deleteAllTasks = () => {
@@ -141,7 +147,7 @@ const AllTasks: React.FC = () => {
             <Text style={styles.modalDate}>Start Date: {formatDate(selectedTask?.startTime)}</Text>
             <Text style={styles.modalDate}>End Date: {formatDate(selectedTask?.endTime)}</Text>
             <Text style={styles.modalDate}>
-              Difference: {getDifferenceInDays(selectedTask?.startTime, selectedTask?.endTime)} days
+              Difference: {getDifferenceInDays(selectedTask?.startTime, selectedTask?.endTime)}
             </Text>
             <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
               <Text style={styles.closeButtonText}>Close</Text>
@@ -175,13 +181,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   viewButton: {
-    backgroundColor: 'blue',
+    backgroundColor: '#09008D',
     padding: 8,
     borderRadius: 5,
     marginRight: 8,
   },
   deleteButton: {
-    backgroundColor: 'red',
+    backgroundColor: '#AF0505',
     padding: 8,
     borderRadius: 5,
   },
@@ -216,7 +222,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   closeButton: {
-    backgroundColor: 'blue',
+    backgroundColor: '#09008D',
     padding: 8,
     borderRadius: 5,
   },
@@ -226,7 +232,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   deleteAllButton: {
-    backgroundColor: 'red',
+    backgroundColor: '#AF0505',
     padding: 8,
     borderRadius: 5,
     marginVertical: 8,

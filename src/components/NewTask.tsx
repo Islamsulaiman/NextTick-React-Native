@@ -132,8 +132,24 @@ const NewTask = () => {
     setIsModalVisible(false);
   };
 
+
+  const shadowStyle = {
+    shadowColor: 'rgba(0, 0, 0, 0.5)',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.8,
+    shadowRadius: 3.84,
+    elevation: 5,
+  };
+
   return (
     <View style={styles.container}>
+
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>Let's start</Text>
+      </View>
 
       <Animated.View
         style={[styles.overlay, { backgroundColor: interpolatedBackgroundColor }]}
@@ -161,26 +177,32 @@ const NewTask = () => {
           />
         </View>
 
-      <View style={styles.inputWrapper}>
-        <Text style={styles.inputLabel}>Start Time</Text>
-        <TouchableOpacity onPress={showStartTimePickerHandler}>
-          <Text style={styles.dateText}>{startTime.toLocaleString()}</Text>
-        </TouchableOpacity>
-        {showStartTimePicker && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={startTime}
-            mode="date"
-            is24Hour={true}
-            display="default"
-            onChange={startTimeChangeHandler}
-          />
-        )}
+        <View style={styles.inputWrapper}>
+          <Text style={styles.inputLabel}>Start Time</Text>
+          <TouchableOpacity
+            onPress={showStartTimePickerHandler}
+            style={[styles.dateTimePicker, shadowStyle]}
+            >
+            <Text style={styles.dateText}>{startTime.toLocaleString()}</Text>
+          </TouchableOpacity>
+          {showStartTimePicker && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={startTime}
+              mode="date"
+              is24Hour={true}
+              display="default"
+              onChange={startTimeChangeHandler}
+            />
+          )}
       </View>
 
       <View style={styles.inputWrapper}>
         <Text style={styles.inputLabel}>End Time</Text>
-        <TouchableOpacity onPress={showEndTimePickerHandler}>
+        <TouchableOpacity
+          onPress={showEndTimePickerHandler}
+          style={[styles.dateTimePicker, shadowStyle]}
+          >
           <Text style={styles.dateText}>{endTime.toLocaleString()}</Text>
         </TouchableOpacity>
         {showEndTimePicker && (
@@ -262,10 +284,10 @@ const styles = StyleSheet.create({
   },
   nextText: {
     fontWeight: 'bold',
-    color: 'red',
+    color: '#AF0505',
   },
   tickText: {
-    color: 'red',
+    color: '#AF0505',
   },
   input: {
     width: '97%',
@@ -300,7 +322,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 5,
   },
   button: {
-    backgroundColor: 'blue',
+    backgroundColor: '#0D01AF',
     padding: 10,
     borderRadius: 20,
     width: '97%',
@@ -315,7 +337,7 @@ const styles = StyleSheet.create({
   },
   forgotPasswordText: {
     marginTop: 10,
-    color: 'blue',
+    color: '#0D01AF',
     fontSize: 16,
   },
   modalContainer: {
@@ -334,7 +356,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   modalButton: {
-    backgroundColor: 'blue',
+    backgroundColor: '#0D01AF',
     padding: 10,
     borderRadius: 20,
     alignSelf: 'center',
@@ -362,6 +384,33 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderBottomWidth: 1,
     borderBottomColor: 'gray',
+  },
+  headerContainer: {
+    backgroundColor: '#f0f0f0',
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1,
+  },
+  headerText: {
+    color: 'gray',
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+  dateTimePicker: {
+    width: '97%',
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingLeft: 10,
+    borderRadius: 5,
+    backgroundColor: 'white',
+    justifyContent: 'center',
   },
 });
 

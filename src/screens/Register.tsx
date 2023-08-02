@@ -319,10 +319,10 @@ const styles = StyleSheet.create({
     },
     nextText: {
       fontWeight: 'bold',
-      color: 'red',
+      color: '#AF0505',
     },
     tickText: {
-      color: 'red',
+      color: '#AF0505',
     },
     input: {
       width: '97%',
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
       borderBottomRightRadius: 5,
     },
     button: {
-      backgroundColor: 'blue',
+      backgroundColor: '#09008D',
       padding: 10,
       borderRadius: 20,
       width: '97%',
@@ -372,7 +372,7 @@ const styles = StyleSheet.create({
     },
     forgotPasswordText: {
       marginTop: 10,
-      color: 'blue',
+      color: '#09008D',
       fontSize: 16,
     },
     modalContainer: {
@@ -391,7 +391,7 @@ const styles = StyleSheet.create({
       marginBottom: 10,
     },
     modalButton: {
-      backgroundColor: 'blue',
+      backgroundColor: '#09008D',
       padding: 10,
       borderRadius: 20,
       alignSelf: 'center',
