@@ -2,11 +2,14 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Modal, Alert, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 interface Task {
-  id?: number;
+  id: number;
   title: string;
   description: string;
+  startTime: number;
+  endTime: number;
 }
 
 const AllTasks: React.FC = () => {
@@ -14,9 +17,9 @@ const AllTasks: React.FC = () => {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-  useEffect(() => {
+  useFocusEffect(() => {
     loadTasksFromAsyncStorage();
-  }, []);
+  });
 
   const loadTasksFromAsyncStorage = async () => {
     try {
@@ -81,6 +84,17 @@ const AllTasks: React.FC = () => {
     );
   };
 
+  const formatDate = (timestamp: number) => {
+    const date = new Date(timestamp);
+    return date.toLocaleDateString('en-US');
+  };
+
+  const getDifferenceInDays = (startTimestamp: number, endTimestamp: number) => {
+    const oneDayInMilliseconds = 1000 * 60 * 60 * 24;
+    const differenceInMilliseconds = endTimestamp - startTimestamp;
+    return Math.floor(differenceInMilliseconds / oneDayInMilliseconds);
+  };
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -94,7 +108,12 @@ const AllTasks: React.FC = () => {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>{selectedTask?.title}</Text>
-            <Text style={styles.modalDescription}>{selectedTask?.description}</Text>
+            <Text style={styles.modalDescription}>Description: {selectedTask?.description}</Text>
+            <Text style={styles.modalDate}>Start Date: {formatDate(selectedTask?.startTime)}</Text>
+            <Text style={styles.modalDate}>End Date: {formatDate(selectedTask?.endTime)}</Text>
+            <Text style={styles.modalDate}>
+              Difference: {getDifferenceInDays(selectedTask?.startTime, selectedTask?.endTime)} days
+            </Text>
             <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
               <Text style={styles.closeButtonText}>Close</Text>
             </TouchableOpacity>
@@ -160,7 +179,11 @@ const styles = StyleSheet.create({
   },
   modalDescription: {
     fontSize: 16,
-    marginBottom: 16,
+    marginBottom: 8,
+  },
+  modalDate: {
+    fontSize: 14,
+    marginBottom: 4,
   },
   closeButton: {
     backgroundColor: 'blue',
