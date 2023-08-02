@@ -184,23 +184,23 @@ const RegisterScreen: React.FC = () => {
         </View>
 
         <View style={styles.inputWrapper}>
-        <Text style={styles.inputLabel}>Date of Birth</Text>
-        <TouchableOpacity onPress={showDatePickerHandler}>
-          <Text style={styles.dateOfBirthText}>
-            {dob ? dob.toDateString() : 'Select Date of Birth'}
-          </Text>
-        </TouchableOpacity>
-        {showDatePicker && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={dob || new Date()}
-            mode="date"
-            display="default"
-            onChange={dateChangeHandler}
-          />
-        )}
+          <Text style={styles.inputLabel}>Date of Birth</Text>
+          <TouchableOpacity onPress={showDatePickerHandler}>
+            <Text style={styles.dateOfBirthText}>
+              {dob ? dob.toDateString() : 'Select Date of Birth'}
+            </Text>
+          </TouchableOpacity>
+          {showDatePicker && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={dob || new Date()}
+              mode="date"
+              display="default"
+              onChange={dateChangeHandler}
+            />
+          )}
 
-      </View>
+        </View>
 
         <View style={styles.inputWrapper}>
           <Text style={styles.inputLabel}>Full Name</Text>
