@@ -11,24 +11,32 @@ import {
   Modal,
 } from 'react-native';
 
-import CheckBox from '@react-native-community/checkbox';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+import {useNavigation} from '@react-navigation/native';
+
 
 
 const RegisterScreen: React.FC = () => {
 
+  const navigation = useNavigation();
+
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
-  const [dob, setDob] = useState<string>('');
+
+  const [startTime, setStartTime] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [dob, setDob] = useState<Date | undefined>(undefined);
+
   const [fullName, setFullName] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [phoneExt, setPhoneExt] = useState<string>('');
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [modalMessage, setModalMessage] = useState<string>('');
-  const [agreeTerms, setAgreeTerms] = useState<boolean>(false);
-  const [isNotRobot, setIsNotRobot] = useState<boolean>(false);
-  const [isAgreeChecked, setIsAgreeChecked] = useState<boolean>(false);
 
 
   const isEmailValid = (input: string) => {
@@ -40,9 +48,30 @@ const RegisterScreen: React.FC = () => {
     return input.length >= 8;
   };
 
-  const handleRegister = () => {
-    // Register logic here
-    console.log('Register button pressed');
+  const storeData = async (value: Object) => {
+    try {
+      await AsyncStorage.setItem('user', JSON.stringify(value));
+
+
+      console.log('heloooooooooo');
+      navigation.navigate('Login');
+    } catch (e) {
+      console.error('Error during registration:', e);
+    }
+  };
+
+  const handleRegister =  () => {
+
+    const user = {
+      fullName,
+      email,
+      password,
+    };
+
+    storeData(user);
+
+    // navigation.navigate('Login');
+
   };
 
   const handleCloseModal = () => {
@@ -64,6 +93,18 @@ const RegisterScreen: React.FC = () => {
     inputRange: [0, 1],
     outputRange: ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.5)'],
   });
+
+
+  const showDatePickerHandler = () => {
+    setShowDatePicker(true);
+  };
+
+  const dateChangeHandler = (event: any, selectedDate: any) => {
+    setShowDatePicker(false);
+    if (selectedDate) {
+      setDob(selectedDate);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -135,18 +176,30 @@ const RegisterScreen: React.FC = () => {
               }
             }}
           />
+
+
+
         </View>
 
         <View style={styles.inputWrapper}>
-          <Text style={styles.inputLabel}>Date of Birth</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Date of Birth"
-            value={dob}
-            onChangeText={setDob}
-            keyboardType="numeric"
+        <Text style={styles.inputLabel}>Date of Birth</Text>
+        <TouchableOpacity onPress={showDatePickerHandler}>
+          <Text style={styles.dateOfBirthText}>
+            {dob ? dob.toDateString() : 'Select Date of Birth'}
+          </Text>
+        </TouchableOpacity>
+        {showDatePicker && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={dob || new Date()}
+            mode="time"
+            display="default"
+            onChange={dateChangeHandler}
           />
-        </View>
+        )}
+      </View>
+
+
 
         <View style={styles.inputWrapper}>
           <Text style={styles.inputLabel}>Full Name</Text>
@@ -178,36 +231,12 @@ const RegisterScreen: React.FC = () => {
           </View>
         </View>
 
-
-        {/* checkboxes */}
-        {/* <View style={styles.checkboxContainer}>
-
-            <CheckBox value={isAgreeChecked}
-                onValueChange={setIsAgreeChecked}
-                // style={styles.checkbox}
-                tintColors={{ true: 'blue', false: 'gray' }}
-                />
-            <Text style={styles.checkboxLabel}>I agree with the terms and conditions.</Text>
-
-        </View>
-
-        <View style={styles.checkboxContainer}>
-            <CheckBox value={isAgreeChecked}
-                onValueChange={setIsAgreeChecked}
-                // style={styles.checkbox}
-                tintColors={{ true: 'blue', false: 'gray' }}
-                />
-            <Text style={styles.checkboxLabel}>I am not a robot.</Text>
-        </View> */}
-
         <TouchableOpacity
           style={[
             styles.button,
             !isEmailValid(email) ||
               !isPasswordValid(password) ||
-              confirmPassword !== password ||
-              !agreeTerms ||
-              !isNotRobot
+              confirmPassword !== password
               ? styles.disabled
               : null,
           ]}
@@ -215,9 +244,7 @@ const RegisterScreen: React.FC = () => {
           disabled={
             !isEmailValid(email) ||
             !isPasswordValid(password) ||
-            confirmPassword !== password ||
-            !agreeTerms ||
-            !isNotRobot
+            confirmPassword !== password
           }
           onPressIn={startAnimation}
         >
@@ -410,6 +437,19 @@ const styles = StyleSheet.create({
       fontSize: 18,
       textAlign: 'center',
     },
+
+
+
+
+
+    dateOfBirthText: {
+      fontSize: 16,
+      color: 'black',
+      paddingVertical: 10,
+      borderBottomWidth: 1,
+      borderBottomColor: 'gray',
+    },
+
   });
 
 

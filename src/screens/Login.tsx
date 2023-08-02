@@ -34,7 +34,8 @@ const LoginScreen: React.FC = () => {
   };
 
   const handleLogin = () => {
-
+    setPassword('');
+    setEmail('');
     navigation.navigate('Home');
   };
 
