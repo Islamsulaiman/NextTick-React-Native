@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable prettier/prettier */
 import * as React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -26,7 +27,6 @@ export default function TabBase() {
         options={{
           tabBarLabel: 'Home',
           headerShown: false,
-          // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({color, size}) => (
             <Ionicons name="home-outline" color={color} size={size} />
           ),
@@ -38,7 +38,6 @@ export default function TabBase() {
         options={{
           tabBarLabel: 'My Tasks',
           headerShown: false,
-          // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({color, size}) => (
             <FontAwesome5 name="tasks" color={color} size={size} />
           ),
@@ -50,7 +49,6 @@ export default function TabBase() {
         options={{
           tabBarLabel: 'New Task',
           headerShown: false,
-          // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({color, size}) => (
             <Ionicons name="add-circle-outline" color={color} size={size} />
           ),
@@ -60,12 +58,11 @@ export default function TabBase() {
         name="settings"
         component={Info}
         options={{
-          tabBarLabel: '',
+          tabBarLabel: 'Profile',
           headerShown: false,
-          // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({color, size}) => (
             <MaterialCommunityIcons
-              name="dots-vertical"
+              name="account"
               color={color}
               size={size}
             />

@@ -28,7 +28,6 @@ const RegisterScreen: React.FC = () => {
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
 
-  const [startTime, setStartTime] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [dob, setDob] = useState<Date | undefined>(undefined);
 
@@ -65,6 +64,9 @@ const RegisterScreen: React.FC = () => {
       fullName,
       email,
       password,
+      phoneNumber,
+      phoneExt,
+      dob,
     };
 
     console.log('user');
