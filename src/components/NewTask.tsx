@@ -34,6 +34,24 @@ const NewTask = () => {
 
   const handleTaskSubmit = async () => {
 
+    if (!taskTitle.trim() || taskTitle.length > 100) {
+      setModalMessage('Task title must be between 1 and 100 characters.');
+      setIsModalVisible(true);
+      return;
+    }
+
+    if (taskDescription.length > 300) {
+      setModalMessage('Task description must not exceed 300 characters.');
+      setIsModalVisible(true);
+      return;
+    }
+
+    if (endTime < startTime) {
+      setModalMessage('End date can"t be before the start date!');
+      setIsModalVisible(true);
+      return;
+    }
+
     if (endTime < startTime) {
       setModalMessage('End date can"t be before start date!.');
       setIsModalVisible(true);
